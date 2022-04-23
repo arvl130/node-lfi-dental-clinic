@@ -6,6 +6,6 @@ const deleteMessage = require("../controllers/messages/deleteMessage");
 
 router.get("/", getAllMessages);
 
-router.get("/:uid/delete", deleteMessage);
+router.delete("/:uid/delete", deleteMessage);
 
 module.exports = router;
