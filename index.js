@@ -10,8 +10,10 @@ app.use(express.json());
 // initialize Firebase Admin
 require("./firebase");
 
+const authRoute = require("./routes/auth");
 const messagesRoute = require("./routes/messages");
 
+app.use("/auth", authRoute);
 app.use("/messages", messagesRoute);
 
 app.use((req, res) => {
