@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
 
   res.status(200).json({
     message: "List of all messages",
-    messages,
+    payload: messages,
   });
 });
 
