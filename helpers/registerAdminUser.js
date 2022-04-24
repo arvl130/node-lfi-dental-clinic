@@ -21,7 +21,8 @@ module.exports = async (username, password) => {
     accountType: "admin",
   });
 
-  const docSnap = db.collection("users").doc(uid).get();
+  const docSnap = await db.collection("users").doc(uid).get();
+
   if (!docSnap.exists) {
     throw new HttpError("Could not retrieve created user");
   }
