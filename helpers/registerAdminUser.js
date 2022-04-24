@@ -17,7 +17,6 @@ module.exports = async (email, password) => {
   });
 
   await db.collection("users").doc(uid).set({
-    email,
     accountType: "admin",
   });
 
