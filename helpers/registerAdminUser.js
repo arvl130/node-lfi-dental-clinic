@@ -7,6 +7,7 @@ const HttpError = require("../helpers/HttpError");
 module.exports = async (email, password) => {
   const userRecord = await auth.createUser({
     displayName: "Admin User",
+    email,
     password,
   });
 
