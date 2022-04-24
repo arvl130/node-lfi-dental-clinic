@@ -1,5 +1,5 @@
 const registerAdminUser = require("../../helpers/registerAdminUser");
-const HttpError = require("../helpers/HttpError");
+const HttpError = require("../../helpers/HttpError");
 
 module.exports = async (req, res) => {
   try {
@@ -12,6 +12,10 @@ module.exports = async (req, res) => {
 
     if (!password) {
       throw new HttpError("Missing or invalid password", 400);
+    }
+
+    if (password && password.length < 8) {
+      throw new HttpError("Password too short", 400);
     }
 
     const user = await registerAdminUser(username, password);
