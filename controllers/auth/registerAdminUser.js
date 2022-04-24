@@ -3,11 +3,11 @@ const HttpError = require("../../helpers/HttpError");
 
 module.exports = async (req, res) => {
   try {
-    const username = req.body.username;
+    const email = req.body.email;
     const password = req.body.password;
 
-    if (!username) {
-      throw new HttpError("Missing or invalid username", 400);
+    if (!email) {
+      throw new HttpError("Missing or invalid email", 400);
     }
 
     if (!password) {
@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
       throw new HttpError("Password too short", 400);
     }
 
-    const user = await registerAdminUser(username, password);
+    const user = await registerAdminUser(email, password);
 
     res.status(200).json({
       message: "User created",
