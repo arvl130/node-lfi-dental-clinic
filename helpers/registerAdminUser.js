@@ -4,7 +4,7 @@ const { getAuth } = require("firebase-admin/auth");
 const auth = getAuth();
 const HttpError = require("../helpers/HttpError");
 
-module.exports = async (username, password) => {
+module.exports = async (email, password) => {
   const userRecord = await auth.createUser({
     displayName: "Admin User",
     password,
@@ -17,7 +17,7 @@ module.exports = async (username, password) => {
   });
 
   await db.collection("users").doc(uid).set({
-    username,
+    email,
     accountType: "admin",
   });
 
