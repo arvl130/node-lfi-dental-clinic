@@ -12,7 +12,7 @@ module.exports = async (username, password) => {
 
   const uid = userRecord.uid;
 
-  await auth.setCustomUserClaims({
+  await auth.setCustomUserClaims(uid, {
     accountType: "admin",
   });
 
