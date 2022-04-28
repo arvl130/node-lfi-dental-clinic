@@ -12,9 +12,11 @@ require("./firebase");
 
 const authRoute = require("./routes/auth");
 const messagesRoute = require("./routes/messages");
+const schedulesRoute = require("./routes/schedules");
 
 app.use("/auth", authRoute);
 app.use("/messages", messagesRoute);
+app.use("/schedules", schedulesRoute);
 
 app.use((req, res) => {
   res.status(404).json({
