@@ -9,9 +9,10 @@ module.exports = async (startSeconds, endSeconds) => {
   // We pass seconds to this function, so make sure to
   // transform them into milliseconds.
   const colSnap = await db
-    .collection("closed_dates")
+    .collection("timeslots")
     .where(FieldPath.documentId(), ">=", startSeconds)
     .where(FieldPath.documentId(), "<", endSeconds)
+    .where("status", "==", "closed")
     .get();
 
   const dates = [];
