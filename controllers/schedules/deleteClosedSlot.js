@@ -1,4 +1,4 @@
-const deleteClosedSlot = require("../../helpers/calendar/deleteClosedSlot");
+const deleteSlotRecord = require("../../helpers/timeslots/deleteSlotRecord");
 const HttpError = require("../../helpers/HttpError");
 
 module.exports = async (req, res) => {
@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
         400
       );
 
-    await deleteClosedSlot(slotSeconds);
+    await deleteSlotRecord(slotSeconds);
 
     res.status(200).json({
       message: "Closed slot deleted",
