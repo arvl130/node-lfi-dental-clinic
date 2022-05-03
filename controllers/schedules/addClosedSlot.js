@@ -1,4 +1,4 @@
-const addClosedSlot = require("../../helpers/calendar/addClosedSlot");
+const createSlotRecord = require("../../helpers/timeslots/createSlotRecord");
 const HttpError = require("../../helpers/HttpError");
 
 module.exports = async (req, res) => {
@@ -11,7 +11,9 @@ module.exports = async (req, res) => {
         400
       );
 
-    await addClosedSlot(slotSeconds);
+    await createSlotRecord(slotSeconds, {
+      status: "closed",
+    });
 
     res.status(200).json({
       message: "Closed slot added",
