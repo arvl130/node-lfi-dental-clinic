@@ -1,27 +1,27 @@
-const { getFirestore, FieldPath } = require("firebase-admin/firestore");
+const { getFirestore } = require("firebase-admin/firestore");
+const getUnixTimestampFromMonthAndYear = require("../../helpers/conversions/getUnixTimestampFromMonthAndYear");
+
 const db = getFirestore();
 
-module.exports = async (startSeconds, endSeconds) => {
-  // We pass seconds to this function, so make sure to
-  // transform them into milliseconds.
-  const colSnap = await db
-    .collection("timeslots")
-    .where(FieldPath.documentId(), ">=", startSeconds)
-    .where(FieldPath.documentId(), "<", endSeconds)
-    .where("status", "in", ["closed", "taken"])
+module.exports = async (year, month) => {
+  const unixTimestamp = getUnixTimestampFromMonthAndYear(year, month);
+
+  const docSnap = await db
+    .collection("monthlyReservations")
+    .doc(unixTimestamp.toString())
     .get();
 
   const dates = [];
 
-  if (colSnap.empty) return dates;
-
-  colSnap.forEach((doc) => {
-    const data = doc.data();
-    dates.push({
-      timeslot: doc.id,
-      status: data.status,
+  if (docSnap.exists) {
+    const data = docSnap.data();
+    Object.keys(data).forEach((timeslot) => {
+      dates.push({
+        timeslot,
+        status: data[timeslot].status,
+      });
     });
-  });
+  }
 
   return dates;
 };
