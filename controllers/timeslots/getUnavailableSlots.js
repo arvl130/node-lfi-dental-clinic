@@ -3,17 +3,13 @@ const HttpError = require("../../helpers/HttpError");
 
 module.exports = async (req, res) => {
   try {
-    const startSeconds = req.params.startSeconds;
-    const endSeconds = req.params.endSeconds;
+    const month = req.params.month;
+    const year = req.params.year;
 
-    if (!startSeconds)
-      throw new HttpError("Missing or invalid start seconds", 400);
-    if (!endSeconds) throw new HttpError("Missing or invalid end seconds", 400);
+    if (!month) throw new HttpError("Missing or invalid month", 400);
+    if (!year) throw new HttpError("Missing or invalid year", 400);
 
-    const unavailableSlots = await getUnavailableSlots(
-      startSeconds,
-      endSeconds
-    );
+    const unavailableSlots = await getUnavailableSlots(year, month);
 
     res.status(200).json({
       message: "List of unavailable timeslots",
