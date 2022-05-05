@@ -7,13 +7,15 @@ const getClosedSlots = require("../controllers/schedules/getClosedSlots");
 const getUnavailableSlots = require("../controllers/timeslots/getUnavailableSlots");
 const router = express.Router();
 
-router.get("/closed/:startSeconds/:endSeconds", getClosedSlots);
+/* Admin only */
+router.put("/closed", addClosedSlot);
 router.delete("/closed/:slotSeconds", deleteClosedSlot);
-router.put("/closed/", addClosedSlot);
+router.get("/closed/:year/:month", getClosedSlots); // deprecated
 
-router.patch("/appointments/:slotSeconds/cancel", cancelAppointment);
+/* Anyone */
 router.put("/appointments", newAppointment);
+router.patch("/appointments/:slotSeconds", cancelAppointment); // patients only
 
-router.get("/unavailable/:startSeconds/:endSeconds", getUnavailableSlots);
+router.get("/unavailable/:year/:month", getUnavailableSlots);
 
 module.exports = router;
