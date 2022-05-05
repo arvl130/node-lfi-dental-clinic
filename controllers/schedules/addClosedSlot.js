@@ -6,14 +6,9 @@ module.exports = async (req, res) => {
     const slotSeconds = req.body.slotSeconds;
 
     if (!slotSeconds)
-      throw new HttpError(
-        `Missing or invalid slot seconds: ${slotSeconds}`,
-        400
-      );
+      throw new HttpError("Missing or invalid slot seconds", 400);
 
-    await createSlotRecord(slotSeconds, {
-      status: "closed",
-    });
+    await createSlotRecord(slotSeconds, "closed");
 
     res.status(200).json({
       message: "Closed slot added",
