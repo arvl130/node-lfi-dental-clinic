@@ -1,20 +1,19 @@
-const getClosedDates = require("../../helpers/calendar/getClosedSlots");
+const getClosedSlots = require("../../helpers/calendar/getClosedSlots");
 const HttpError = require("../../helpers/HttpError");
 
 module.exports = async (req, res) => {
   try {
-    const startSeconds = req.params.startSeconds;
-    const endSeconds = req.params.endSeconds;
+    const year = req.params.year;
+    const month = req.params.month;
 
-    if (!startSeconds)
-      throw new HttpError("Missing or invalid start seconds", 400);
-    if (!endSeconds) throw new HttpError("Missing or invalid end seconds", 400);
+    if (!year) throw new HttpError("Missing or invalid year", 400);
+    if (!month) throw new HttpError("Missing or invalid month", 400);
 
-    const closedDates = await getClosedDates(startSeconds, endSeconds);
+    const closedSlots = await getClosedSlots(year, month);
 
     res.status(200).json({
       message: "List of dates closed in Unix seconds",
-      payload: closedDates,
+      payload: closedSlots,
     });
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
