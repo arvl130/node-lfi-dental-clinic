@@ -1,11 +1,11 @@
-const createSlotRecord = require("../../helpers/timeslots/createSlotRecord");
+const newAppointment = require("../../helpers/appointments/newAppointment");
 const HttpError = require("../../helpers/HttpError");
 
 module.exports = async (req, res) => {
   try {
     const slotSeconds = req.body.slotSeconds;
-    const patientUid = req.body.patientUid;
     const service = req.body.service;
+    const patientUid = req.patientUid;
 
     if (!slotSeconds)
       throw new HttpError(
@@ -13,17 +13,13 @@ module.exports = async (req, res) => {
         400
       );
 
-    if (!patientUid)
-      throw new HttpError(`Missing or invalid patient UID: ${patientUid}`, 400);
+    if (isNaN(parseInt(slotSeconds)))
+      throw new HttpError(`Slot seconds is non-numeric: ${slotSeconds}`, 400);
 
     if (!service)
       throw new HttpError(`Missing or invalid service: ${service}`, 400);
 
-    await createSlotRecord(slotSeconds, {
-      patientUid,
-      service,
-      status: "taken",
-    });
+    await newAppointment(patientUid, slotSeconds, service);
 
     res.status(200).json({
       message: "New appointment created",
