@@ -1,6 +1,13 @@
-const { getFirestore } = require("firebase-admin/firestore");
+const { getFirestore, FieldValue } = require("firebase-admin/firestore");
+const getMonthSecondsFromSlotSeconds = require("../conversions/getMonthSecondsFromSlotSeconds");
 const db = getFirestore();
 
 module.exports = async (slotSeconds) => {
-  await db.collection("timeslots").doc(slotSeconds.toString()).delete();
+  const monthSeconds = getMonthSecondsFromSlotSeconds(slotSeconds);
+  await db
+    .collection("monthlyReservations")
+    .doc(monthSeconds.toString())
+    .update({
+      [slotSeconds]: FieldValue.delete(),
+    });
 };
