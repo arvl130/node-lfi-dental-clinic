@@ -4,6 +4,10 @@ const router = express.Router();
 const updateMedicalChart = require("../controllers/users/updateMedicalChart");
 const requirePatientToken = require("../middleware/requirePatientToken");
 
-router.patch("/medicalchart", requirePatientToken, updateMedicalChart);
+router.patch(
+  "/:patientUid/medicalchart",
+  requirePatientToken,
+  updateMedicalChart
+);
 
 module.exports = router;
