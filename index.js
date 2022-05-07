@@ -13,7 +13,9 @@ require("./firebase");
 const authRoute = require("./routes/auth");
 const messagesRoute = require("./routes/messages");
 const timeslotsRoute = require("./routes/timeslots");
+const usersRoute = require("./routes/users");
 
+app.use("/users", usersRoute);
 app.use("/auth", authRoute);
 app.use("/messages", messagesRoute);
 app.use("/timeslots", timeslotsRoute);
