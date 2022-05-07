@@ -5,10 +5,13 @@ const updateMedicalChart = require("../../helpers/users/updateMedicalChart");
 
 module.exports = async (req, res) => {
   try {
+    const patientUid = req.params.patientUid;
     const personalInformation = req.body.personalInformation;
     const medicalHistory = req.body.medicalHistory;
     const dentalHistory = req.body.dentalHistory;
-    const patientUid = req.patientUid;
+
+    if (!patientUid)
+      throw new HttpError("Missing or invalid dental history", 400);
 
     if (!personalInformation)
       throw new HttpError("Missing or invalid personal information", 400);
