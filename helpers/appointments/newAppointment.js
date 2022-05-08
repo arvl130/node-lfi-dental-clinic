@@ -22,6 +22,8 @@ module.exports = async (patientUid, slotSeconds, service) => {
     price: null,
     balance: null,
     status: null,
+    month: monthSeconds,
+    patientUid,
   });
 
   batch.update(
