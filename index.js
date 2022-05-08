@@ -14,11 +14,13 @@ const authRoute = require("./routes/auth");
 const messagesRoute = require("./routes/messages");
 const timeslotsRoute = require("./routes/timeslots");
 const usersRoute = require("./routes/users");
+const appointmentsRoute = require("./routes/appointments");
 
 app.use("/users", usersRoute);
 app.use("/auth", authRoute);
 app.use("/messages", messagesRoute);
 app.use("/timeslots", timeslotsRoute);
+app.use("/appointments", appointmentsRoute);
 
 app.use((req, res) => {
   res.status(404).json({
