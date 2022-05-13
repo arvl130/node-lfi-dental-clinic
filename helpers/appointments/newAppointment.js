@@ -19,11 +19,13 @@ module.exports = async (patientUid, slotSeconds, service) => {
     createdAt: FieldValue.serverTimestamp(),
     service,
     procedure: "",
-    price: null,
-    balance: null,
+    price: 0,
+    balance: 0,
     status: null,
     month: monthSeconds,
     patientUid,
+    attended: false,
+    procedureVisible: false,
   });
 
   batch.update(
