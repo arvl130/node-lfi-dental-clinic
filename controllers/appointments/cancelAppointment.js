@@ -1,9 +1,10 @@
-const deleteSlotRecord = require("../../helpers/timeslots/deleteSlotRecord");
 const HttpError = require("../../helpers/HttpError");
+const cancelAppointment = require("../../helpers/appointments/cancelAppointment");
 
 module.exports = async (req, res) => {
   try {
     const slotSeconds = req.params.slotSeconds;
+    const patientUid = req.patientUid;
 
     if (!slotSeconds)
       throw new HttpError(
@@ -11,7 +12,7 @@ module.exports = async (req, res) => {
         400
       );
 
-    await deleteSlotRecord(slotSeconds);
+    await cancelAppointment(patientUid, slotSeconds);
 
     res.status(200).json({
       message: "Appointment cancelled",
