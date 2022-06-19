@@ -4,15 +4,24 @@ const { getAuth } = require("firebase-admin/auth")
 const auth = getAuth()
 const db = getFirestore()
 
-module.exports = async (numberOfUsers) => {
+module.exports = async (numberOfUsers, startAt = null) => {
   const usersList = []
 
-  const usersSnapshot = await db
-    .collection("users")
-    .where("accountType", "==", "patient")
-    .orderBy("displayName")
-    .limit(numberOfUsers)
-    .get()
+  const usersSnapshot =
+    startAt !== null
+      ? await db
+          .collection("users")
+          .where("accountType", "==", "patient")
+          .orderBy("displayName")
+          .startAt(await db.collection("users").doc(startAt).get())
+          .limit(numberOfUsers)
+          .get()
+      : await db
+          .collection("users")
+          .where("accountType", "==", "patient")
+          .orderBy("displayName")
+          .limit(numberOfUsers)
+          .get()
 
   if (usersSnapshot.empty) return usersList
 
