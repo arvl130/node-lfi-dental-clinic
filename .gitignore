@@ -2,4 +2,3 @@
 .vscode/*
 garbagebin/*
 node_modules/*
-secret-key.json
