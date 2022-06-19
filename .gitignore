@@ -1,3 +1,4 @@
+.env
 .vscode/*
 garbagebin/*
 node_modules/*
