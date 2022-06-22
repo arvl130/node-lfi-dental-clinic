@@ -15,5 +15,5 @@ module.exports = async (destinationEmail, subject, body) => {
     subject,
     text: body,
   })
-  console.log("Message sent: %s", info.messageId)
+  console.log("Message sent: %s to %s", info.messageId, destinationEmail)
 }
