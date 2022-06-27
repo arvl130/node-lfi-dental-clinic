@@ -23,6 +23,12 @@ const updateDentalChart = require("../controllers/users/dental-chart/updateDenta
 const getDeciduousChart = require("../controllers/users/deciduous-chart/getDeciduousChart")
 const updateDeciduousChart = require("../controllers/users/deciduous-chart/updateDeciduousChart")
 
+const getPatientSignature = require("../controllers/users/patient-signature/getPatientSignature")
+const setPatientSignature = require("../controllers/users/patient-signature/setPatientSignature")
+
+const getGuardianSignature = require("../controllers/users/guardian-signature/getGuardianSignature")
+const setGuardianSignature = require("../controllers/users/guardian-signature/setGuardianSignature")
+
 router.get("/", requireAdminToken, listUsers)
 router.get("/:patientUid", requirePatientOrAdminToken, getUserProfile)
 
@@ -60,6 +66,30 @@ router.patch(
   "/:patientUid/charts/deciduous-chart",
   requireAdminToken,
   updateDeciduousChart
+)
+
+router.get(
+  "/:patientUid/signatures/patient",
+  requireAdminToken,
+  getPatientSignature
+)
+
+router.patch(
+  "/:patientUid/signatures/patient",
+  requireAdminToken,
+  setPatientSignature
+)
+
+router.get(
+  "/:patientUid/signatures/guardian",
+  requireAdminToken,
+  getGuardianSignature
+)
+
+router.patch(
+  "/:patientUid/signatures/guardian",
+  requireAdminToken,
+  setGuardianSignature
 )
 
 router.get(
