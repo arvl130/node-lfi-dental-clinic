@@ -69,13 +69,13 @@ router.get(
 
 router.patch(
   "/:patientUid/charts/dental-chart",
-  requirePatientToken,
+  requireAdminToken,
   updateMedicalChart
 )
 
 router.get(
   "/:patientUid/charts/dental-chart",
-  requirePatientToken,
+  requireAdminToken,
   updateMedicalChart
 )
 
