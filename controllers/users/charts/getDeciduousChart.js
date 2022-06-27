@@ -1,4 +1,4 @@
-const getDeciduousChart = require("../../../helpers/users/deciduous-chart/getDeciduousChart")
+const { getDeciduousChart } = require("../../../helpers/users/charts")
 const HttpError = require("../../../helpers/HttpError")
 
 module.exports = async (req, res) => {

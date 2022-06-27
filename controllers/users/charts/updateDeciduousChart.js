@@ -1,5 +1,5 @@
 const HttpError = require("../../../helpers/HttpError")
-const updateDeciduousChart = require("../../../helpers/users/deciduous-chart/updateDeciduousChart")
+const { getDeciduousChart } = require("../../../helpers/users/charts")
 
 module.exports = async (req, res) => {
   try {
@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
 
     if (!dataUrl) throw new HttpError("Missing or invalid data URL", 400)
 
-    await updateDeciduousChart(patientUid, dataUrl)
+    await getDeciduousChart(patientUid, dataUrl)
 
     res.status(200).json({
       message: "Updated deciduous chart",

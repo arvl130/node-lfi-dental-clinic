@@ -1,7 +1,7 @@
 const { getAuth } = require("firebase-admin/auth")
 const auth = getAuth()
 const HttpError = require("../../../helpers/HttpError")
-const updateMedicalChart = require("../../../helpers/users/medical-chart/updateMedicalChart")
+const { setMedicalChart } = require("../../../helpers/users/charts")
 
 module.exports = async (req, res) => {
   try {
@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
       displayName: personalInformation.fullName,
     })
 
-    await updateMedicalChart(
+    await setMedicalChart(
       patientUid,
       personalInformation,
       medicalHistory,

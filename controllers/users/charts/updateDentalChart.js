@@ -1,5 +1,5 @@
 const HttpError = require("../../../helpers/HttpError")
-const updateDentalChart = require("../../../helpers/users/dental-chart/updateDentalChart")
+const { setDentalChart } = require("../../../helpers/users/charts")
 
 module.exports = async (req, res) => {
   try {
@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
 
     if (!dataUrl) throw new HttpError("Missing or invalid data URL", 400)
 
-    await updateDentalChart(patientUid, dataUrl)
+    await setDentalChart(patientUid, dataUrl)
 
     res.status(200).json({
       message: "Updated dental chart",

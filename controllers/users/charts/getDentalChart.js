@@ -1,7 +1,5 @@
-const getMedicalChart = require("../../../helpers/users/medical-chart/getMedicalChart")
 const HttpError = require("../../../helpers/HttpError")
-const { getAuth } = require("firebase-admin/auth")
-const auth = getAuth()
+const { getDentalChart } = require("../../../helpers/users/charts")
 
 module.exports = async (req, res) => {
   try {
@@ -9,18 +7,18 @@ module.exports = async (req, res) => {
 
     if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
 
-    const medicalChart = await getMedicalChart(patientUid)
+    const dentalChart = await getDentalChart(patientUid)
 
     res.status(200).json({
-      message: "Retrieved medical chart",
+      message: "Retrieved dental chart",
       payload: {
         uid: patientUid,
-        ...medicalChart,
+        ...dentalChart,
       },
     })
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
-      message: `Error occured while getting medical chart: ${e.message}`,
+      message: `Error occured while getting dental chart: ${e.message}`,
     })
   }
 }
