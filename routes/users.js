@@ -14,14 +14,14 @@ const setUserAppointmentProcedure = require("../controllers/users/setUserAppoint
 const listUsers = require("../controllers/users/listUsers")
 const getUserProfile = require("../controllers/users/getUserProfile")
 
-const getMedicalChart = require("../controllers/users/medical-chart/getMedicalChart")
-const updateMedicalChart = require("../controllers/users/medical-chart/updateMedicalChart")
+const getMedicalChart = require("../controllers/users/charts/getMedicalChart")
+const updateMedicalChart = require("../controllers/users/charts/updateMedicalChart")
 
-const getDentalChart = require("../controllers/users/dental-chart/getDentalChart")
-const updateDentalChart = require("../controllers/users/dental-chart/updateDentalChart")
+const getDentalChart = require("../controllers/users/charts/getDentalChart")
+const updateDentalChart = require("../controllers/users/charts/updateDentalChart")
 
-const getDeciduousChart = require("../controllers/users/deciduous-chart/getDeciduousChart")
-const updateDeciduousChart = require("../controllers/users/deciduous-chart/updateDeciduousChart")
+const getDeciduousChart = require("../controllers/users/charts/getDeciduousChart")
+const updateDeciduousChart = require("../controllers/users/charts/updateDeciduousChart")
 
 const getPatientSignature = require("../controllers/users/patient-signature/getPatientSignature")
 const setPatientSignature = require("../controllers/users/patient-signature/setPatientSignature")
