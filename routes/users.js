@@ -23,11 +23,11 @@ const updateDentalChart = require("../controllers/users/charts/updateDentalChart
 const getDeciduousChart = require("../controllers/users/charts/getDeciduousChart")
 const updateDeciduousChart = require("../controllers/users/charts/updateDeciduousChart")
 
-const getPatientSignature = require("../controllers/users/patient-signature/getPatientSignature")
-const setPatientSignature = require("../controllers/users/patient-signature/setPatientSignature")
+const getPatientSignature = require("../controllers/users/signatures/getPatientSignature")
+const setPatientSignature = require("../controllers/users/signatures/setPatientSignature")
 
-const getGuardianSignature = require("../controllers/users/guardian-signature/getGuardianSignature")
-const setGuardianSignature = require("../controllers/users/guardian-signature/setGuardianSignature")
+const getGuardianSignature = require("../controllers/users/signatures/getGuardianSignature")
+const setGuardianSignature = require("../controllers/users/signatures/setGuardianSignature")
 
 const getConsentForm = require("../controllers/users/forms/getConsentForm")
 const setConsentForm = require("../controllers/users/forms/setConsentForm")
