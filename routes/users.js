@@ -68,12 +68,16 @@ router.get(
 )
 
 router.patch(
-  "/:patientUid/dentalchart",
+  "/:patientUid/charts/dental-chart",
   requirePatientToken,
   updateMedicalChart
 )
 
-router.get("/:patientUid/dentalchart", requirePatientToken, updateMedicalChart)
+router.get(
+  "/:patientUid/charts/dental-chart",
+  requirePatientToken,
+  updateMedicalChart
+)
 
 router.delete(
   "/:patientUid/appointments/:slotSeconds/procedure",
