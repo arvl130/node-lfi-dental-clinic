@@ -29,6 +29,12 @@ const setPatientSignature = require("../controllers/users/patient-signature/setP
 const getGuardianSignature = require("../controllers/users/guardian-signature/getGuardianSignature")
 const setGuardianSignature = require("../controllers/users/guardian-signature/setGuardianSignature")
 
+const getConsentForm = require("../controllers/users/forms/getConsentForm")
+const setConsentForm = require("../controllers/users/forms/setConsentForm")
+
+const getAssessmentForm = require("../controllers/users/forms/getAssessmentForm")
+const setAssessmentForm = require("../controllers/users/forms/setAssessmentForm")
+
 router.get("/", requireAdminToken, listUsers)
 router.get("/:patientUid", requirePatientOrAdminToken, getUserProfile)
 
@@ -90,6 +96,21 @@ router.patch(
   "/:patientUid/signatures/guardian",
   requireAdminToken,
   setGuardianSignature
+)
+
+router.get("/:patientUid/forms/consent", requireAdminToken, getConsentForm)
+router.patch("/:patientUid/forms/consent", requireAdminToken, setConsentForm)
+
+router.get(
+  "/:patientUid/forms/assessment",
+  requireAdminToken,
+  getAssessmentForm
+)
+
+router.patch(
+  "/:patientUid/forms/assessment",
+  requireAdminToken,
+  setAssessmentForm
 )
 
 router.get(
