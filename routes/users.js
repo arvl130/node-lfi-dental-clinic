@@ -56,13 +56,13 @@ router.patch(
 )
 
 router.patch(
-  "/:patientUid/medicalchart",
+  "/:patientUid/charts/medical-chart",
   requirePatientOrAdminToken,
   updateMedicalChart
 )
 
 router.get(
-  "/:patientUid/medicalchart",
+  "/:patientUid/charts/medical-chart",
   requirePatientOrAdminToken,
   getMedicalChart
 )
