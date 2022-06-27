@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     const deciduousChart = await getDeciduousChart(patientUid)
 
     res.status(200).json({
-      message: "Updated deciduous chart",
+      message: "Retrieved deciduous chart",
       payload: {
         uid: patientUid,
         ...deciduousChart,

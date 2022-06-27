@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
     const dentalChart = await getDentalChart(patientUid)
 
     res.status(200).json({
-      message: "Updated dental chart",
+      message: "Retrieved dental chart",
       payload: {
         uid: patientUid,
         ...dentalChart,
