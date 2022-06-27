@@ -1,5 +1,5 @@
 const HttpError = require("../../../helpers/HttpError")
-const setPatientSignature = require("../../../helpers/users/patient-signature/setPatientSignature")
+const { setPatientSignature } = require("../../../helpers/users/signatures")
 
 module.exports = async (req, res) => {
   try {

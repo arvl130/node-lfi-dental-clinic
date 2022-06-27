@@ -1,5 +1,5 @@
 const HttpError = require("../../../helpers/HttpError")
-const setGuardianSignature = require("../../../helpers/users/guardian-signature/setGuardianSignature")
+const { setGuardianSignature } = require("../../../helpers/users/signatures")
 
 module.exports = async (req, res) => {
   try {

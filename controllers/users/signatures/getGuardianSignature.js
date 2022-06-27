@@ -1,5 +1,5 @@
-const getPatientSignature = require("../../../helpers/users/patient-signature/getPatientSignature")
 const HttpError = require("../../../helpers/HttpError")
+const { getGuardianSignature } = require("../../../helpers/users/signatures")
 
 module.exports = async (req, res) => {
   try {
@@ -7,18 +7,18 @@ module.exports = async (req, res) => {
 
     if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
 
-    const patientSignature = await getPatientSignature(patientUid)
+    const guardianSignature = await getGuardianSignature(patientUid)
 
     res.status(200).json({
-      message: "Retrieved patient signature",
+      message: "Retrieved guardian signature",
       payload: {
         uid: patientUid,
-        ...patientSignature,
+        ...guardianSignature,
       },
     })
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
-      message: `Error occured while getting patient signature: ${e.message}`,
+      message: `Error occured while getting guardian signature: ${e.message}`,
     })
   }
 }
