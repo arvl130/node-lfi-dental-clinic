@@ -15,7 +15,7 @@ const listUsers = require("../controllers/users/listUsers")
 const getUserProfile = require("../controllers/users/getUserProfile")
 
 const getMedicalChart = require("../controllers/users/medical-chart/getMedicalChart")
-const updateMedicalChart = require("../controllers/users/updateMedicalChart")
+const updateMedicalChart = require("../controllers/users/medical-chart/updateMedicalChart")
 
 const getDentalChart = require("../controllers/users/dental-chart/getDentalChart")
 const updateDentalChart = require("../controllers/users/dental-chart/updateDentalChart")
