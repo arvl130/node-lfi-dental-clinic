@@ -20,6 +20,9 @@ const updateMedicalChart = require("../controllers/users/updateMedicalChart")
 const getDentalChart = require("../controllers/users/dental-chart/getDentalChart")
 const updateDentalChart = require("../controllers/users/dental-chart/updateDentalChart")
 
+const getDeciduousChart = require("../controllers/users/deciduous-chart/getDeciduousChart")
+const updateDeciduousChart = require("../controllers/users/deciduous-chart/updateDeciduousChart")
+
 router.get("/", requireAdminToken, listUsers)
 router.get("/:patientUid", requirePatientOrAdminToken, getUserProfile)
 
@@ -45,6 +48,18 @@ router.patch(
   "/:patientUid/charts/dental-chart",
   requireAdminToken,
   updateDentalChart
+)
+
+router.get(
+  "/:patientUid/charts/deciduous-chart",
+  requireAdminToken,
+  getDeciduousChart
+)
+
+router.patch(
+  "/:patientUid/charts/deciduous-chart",
+  requireAdminToken,
+  updateDeciduousChart
 )
 
 router.get(
