@@ -14,6 +14,8 @@ const setUserAppointmentPending = require("../controllers/users/setUserAppointme
 const getUserAppointmentProcedure = require("../controllers/users/getUserAppointmentProcedure")
 const setUserAppointmentProcedure = require("../controllers/users/setUserAppointmentProcedure")
 const getMedicalChart = require("../controllers/users/medical-chart/getMedicalChart")
+const getDentalChart = require("../controllers/users/dental-chart/getDentalChart")
+const updateDentalChart = require("../controllers/users/dental-chart/updateDentalChart")
 
 router.get("/", requireAdminToken, listUsers)
 
@@ -70,13 +72,13 @@ router.get(
 router.patch(
   "/:patientUid/charts/dental-chart",
   requireAdminToken,
-  updateMedicalChart
+  updateDentalChart
 )
 
 router.get(
   "/:patientUid/charts/dental-chart",
   requireAdminToken,
-  updateMedicalChart
+  getDentalChart
 )
 
 router.delete(
