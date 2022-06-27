@@ -1,7 +1,7 @@
 const { getAuth } = require("firebase-admin/auth")
 const auth = getAuth()
 const HttpError = require("../../helpers/HttpError")
-const updateMedicalChart = require("../../helpers/users/updateMedicalChart")
+const updateMedicalChart = require("../../helpers/users/medical-chart/updateMedicalChart")
 
 module.exports = async (req, res) => {
   try {
