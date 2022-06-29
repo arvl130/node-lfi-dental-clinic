@@ -20,6 +20,7 @@ module.exports = async (email, password, fullName) => {
     await db.collection("users").doc(uid).set({
       accountType: "patient",
       filledInMedicalChart: false,
+      displayName: fullName,
     })
 
     const docSnap = await db.collection("users").doc(uid).get()
