@@ -139,7 +139,7 @@ router.delete(
 
 router.get(
   "/:patientUid/appointments/:slotSeconds/procedure",
-  requireAdminToken,
+  requirePatientOrAdminToken,
   getUserAppointmentProcedure
 )
 
