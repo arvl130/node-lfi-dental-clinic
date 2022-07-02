@@ -150,12 +150,6 @@ router.patch(
 )
 
 router.delete(
-  "/:patientUid/appointments/:slotSeconds/procedure",
-  requirePatientToken,
-  updateMedicalChart
-)
-
-router.delete(
   "/:patientUid/appointments/:slotSeconds/cancel",
   requirePatientToken,
   updateMedicalChart
