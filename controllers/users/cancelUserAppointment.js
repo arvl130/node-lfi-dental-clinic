@@ -1,5 +1,6 @@
 const HttpError = require("../../helpers/HttpError")
 const cancelAppointment = require("../../helpers/appointments/cancelAppointment")
+const getDateTwoDaysBeforeTimeslot = require("../../helpers/conversions/getDateTwoDaysBeforeTimeslot")
 
 module.exports = async (req, res) => {
   try {
@@ -11,6 +12,11 @@ module.exports = async (req, res) => {
         `Missing or invalid slot seconds: ${slotSeconds}`,
         400
       )
+
+    const dateTwoDaysBeforeTimeslot = getDateTwoDaysBeforeTimeslot(slotSeconds)
+
+    if (Date.now() > dateTwoDaysBeforeTimeslot.getTime())
+      throw new HttpError(`Cancellation period exceeded.`, 400)
 
     await cancelAppointment(patientUid, slotSeconds)
 
