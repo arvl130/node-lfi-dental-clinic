@@ -115,7 +115,7 @@ router.patch(
 
 router.get(
   "/:patientUid/appointments",
-  requirePatientOrAdminToken,
+  requirePatientToken,
   getUserAppointments
 )
 
