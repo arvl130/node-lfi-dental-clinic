@@ -35,6 +35,8 @@ const setConsentForm = require("../controllers/users/forms/setConsentForm")
 const getAssessmentForm = require("../controllers/users/forms/getAssessmentForm")
 const setAssessmentForm = require("../controllers/users/forms/setAssessmentForm")
 
+const cancelUserAppointment = require("../controllers/users/cancelUserAppointment")
+
 router.get("/", requireAdminToken, listUsers)
 router.get("/:patientUid", requirePatientOrAdminToken, getUserProfile)
 
@@ -152,7 +154,7 @@ router.patch(
 router.delete(
   "/:patientUid/appointments/:slotSeconds/cancel",
   requirePatientToken,
-  updateMedicalChart
+  cancelUserAppointment
 )
 
 module.exports = router
