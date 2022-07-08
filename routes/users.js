@@ -36,6 +36,7 @@ const getAssessmentForm = require("../controllers/users/forms/getAssessmentForm"
 const setAssessmentForm = require("../controllers/users/forms/setAssessmentForm")
 
 const cancelUserAppointment = require("../controllers/users/cancelUserAppointment")
+const newAppointment = require("../controllers/appointments/newAppointment")
 
 router.get("/", requireAdminToken, listUsers)
 router.get("/:patientUid", requirePatientOrAdminToken, getUserProfile)
@@ -120,6 +121,8 @@ router.get(
   requirePatientToken,
   getUserAppointments
 )
+
+router.put("/:patientUid/appointments", requirePatientToken, newAppointment)
 
 router.put(
   "/:patientUid/appointments/:slotSeconds/attended",
