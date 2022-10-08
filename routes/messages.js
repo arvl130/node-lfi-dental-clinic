@@ -1,12 +1,10 @@
-const express = require("express");
-const router = express.Router();
+const express = require("express")
+const router = express.Router()
 
-const getAllMessages = require("../controllers/messages/getAllMessages");
-const deleteMessage = require("../controllers/messages/deleteMessage");
-const newMessage = require("../controllers/messages/newMessage");
+const { create, remove, getAll } = require("../controllers/MessagesController")
 
-router.get("/", getAllMessages);
-router.put("/", newMessage);
-router.delete("/:uid/delete", deleteMessage);
+router.get("/", getAll)
+router.put("/", create)
+router.delete("/:uid/delete", remove)
 
-module.exports = router;
+module.exports = router

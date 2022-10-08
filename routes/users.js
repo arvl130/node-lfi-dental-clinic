@@ -4,160 +4,128 @@ const router = express.Router()
 const requirePatientToken = require("../middleware/requirePatientToken")
 const requirePatientOrAdminToken = require("../middleware/requirePatientOrAdminToken")
 const requireAdminToken = require("../middleware/requireAdminToken")
-const getUserAppointments = require("../controllers/users/getUserAppointments")
-const setUserAppointmentAttended = require("../controllers/users/setUserAppointmentAttended")
-const setUserAppointmentNotAttended = require("../controllers/users/setUserAppointmentNotAttended")
-const setUserAppointmentPending = require("../controllers/users/setUserAppointmentPending")
-const getUserAppointmentProcedure = require("../controllers/users/getUserAppointmentProcedure")
-const setUserAppointmentProcedure = require("../controllers/users/setUserAppointmentProcedure")
 
-const listUsers = require("../controllers/users/listUsers")
-const getUserProfile = require("../controllers/users/getUserProfile")
+const {
+  cancel,
+  getAll,
+  getProcedure,
+  setProcedure,
+  setAttended,
+  setNotAttended,
+  setPending,
+} = require("../controllers/UserAppointmentsController")
+const { create } = require("../controllers/AppointmentsController")
 
-const getMedicalChart = require("../controllers/users/charts/getMedicalChart")
-const updateMedicalChart = require("../controllers/users/charts/updateMedicalChart")
+const {
+  get: getUser,
+  getFirstN: getFirstNUsers,
+} = require("../controllers/UsersController")
 
-const getDentalChart = require("../controllers/users/charts/getDentalChart")
-const updateDentalChart = require("../controllers/users/charts/updateDentalChart")
+const {
+  getDeciduous,
+  setDeciduous,
+  getDental,
+  setDental,
+  getMedical,
+  setMedical,
+} = require("../controllers/UserChartsController")
 
-const getDeciduousChart = require("../controllers/users/charts/getDeciduousChart")
-const updateDeciduousChart = require("../controllers/users/charts/updateDeciduousChart")
+const {
+  getConsent,
+  setConsent,
+  getAssessment,
+  setAssessment,
+} = require("../controllers/UserFormsController")
 
-const getPatientSignature = require("../controllers/users/signatures/getPatientSignature")
-const setPatientSignature = require("../controllers/users/signatures/setPatientSignature")
+const {
+  getGuardian,
+  setGuardian,
+  getPatient,
+  setPatient,
+} = require("../controllers/UserSignaturesController")
 
-const getGuardianSignature = require("../controllers/users/signatures/getGuardianSignature")
-const setGuardianSignature = require("../controllers/users/signatures/setGuardianSignature")
+/* User info */
+router.get("/", requireAdminToken, getFirstNUsers)
+router.get("/:patientUid", requirePatientOrAdminToken, getUser)
 
-const getConsentForm = require("../controllers/users/forms/getConsentForm")
-const setConsentForm = require("../controllers/users/forms/setConsentForm")
-
-const getAssessmentForm = require("../controllers/users/forms/getAssessmentForm")
-const setAssessmentForm = require("../controllers/users/forms/setAssessmentForm")
-
-const cancelUserAppointment = require("../controllers/users/cancelUserAppointment")
-const newAppointment = require("../controllers/appointments/newAppointment")
-
-router.get("/", requireAdminToken, listUsers)
-router.get("/:patientUid", requirePatientOrAdminToken, getUserProfile)
-
+/* User charts */
 router.get(
   "/:patientUid/charts/medical-chart",
   requirePatientOrAdminToken,
-  getMedicalChart
+  getMedical
 )
 
 router.patch(
   "/:patientUid/charts/medical-chart",
   requirePatientOrAdminToken,
-  updateMedicalChart
+  setMedical
 )
 
-router.get(
-  "/:patientUid/charts/dental-chart",
-  requireAdminToken,
-  getDentalChart
-)
-
-router.patch(
-  "/:patientUid/charts/dental-chart",
-  requireAdminToken,
-  updateDentalChart
-)
+router.get("/:patientUid/charts/dental-chart", requireAdminToken, getDental)
+router.patch("/:patientUid/charts/dental-chart", requireAdminToken, setDental)
 
 router.get(
   "/:patientUid/charts/deciduous-chart",
   requireAdminToken,
-  getDeciduousChart
+  getDeciduous
 )
 
 router.patch(
   "/:patientUid/charts/deciduous-chart",
   requireAdminToken,
-  updateDeciduousChart
+  setDeciduous
 )
 
-router.get(
-  "/:patientUid/signatures/patient",
-  requireAdminToken,
-  getPatientSignature
-)
+/* User signatures */
+router.get("/:patientUid/signatures/patient", requireAdminToken, getPatient)
+router.patch("/:patientUid/signatures/patient", requireAdminToken, setPatient)
+router.get("/:patientUid/signatures/guardian", requireAdminToken, getGuardian)
+router.patch("/:patientUid/signatures/guardian", requireAdminToken, setGuardian)
 
-router.patch(
-  "/:patientUid/signatures/patient",
-  requireAdminToken,
-  setPatientSignature
-)
+/* User forms */
+router.get("/:patientUid/forms/consent", requireAdminToken, getConsent)
+router.patch("/:patientUid/forms/consent", requireAdminToken, setConsent)
+router.get("/:patientUid/forms/assessment", requireAdminToken, getAssessment)
+router.patch("/:patientUid/forms/assessment", requireAdminToken, setAssessment)
 
-router.get(
-  "/:patientUid/signatures/guardian",
-  requireAdminToken,
-  getGuardianSignature
-)
-
-router.patch(
-  "/:patientUid/signatures/guardian",
-  requireAdminToken,
-  setGuardianSignature
-)
-
-router.get("/:patientUid/forms/consent", requireAdminToken, getConsentForm)
-router.patch("/:patientUid/forms/consent", requireAdminToken, setConsentForm)
-
-router.get(
-  "/:patientUid/forms/assessment",
-  requireAdminToken,
-  getAssessmentForm
-)
-
-router.patch(
-  "/:patientUid/forms/assessment",
-  requireAdminToken,
-  setAssessmentForm
-)
-
-router.get(
-  "/:patientUid/appointments",
-  requirePatientToken,
-  getUserAppointments
-)
-
-router.put("/:patientUid/appointments", requirePatientToken, newAppointment)
+/* User appointments */
+router.get("/:patientUid/appointments", requirePatientToken, getAll)
+router.put("/:patientUid/appointments", requirePatientToken, create)
 
 router.put(
   "/:patientUid/appointments/:slotSeconds/attended",
   requireAdminToken,
-  setUserAppointmentAttended
+  setAttended
 )
 
 router.patch(
   "/:patientUid/appointments/:slotSeconds/attended",
   requireAdminToken,
-  setUserAppointmentNotAttended
+  setNotAttended
 )
 
 router.delete(
   "/:patientUid/appointments/:slotSeconds/attended",
   requireAdminToken,
-  setUserAppointmentPending
+  setPending
 )
 
 router.get(
   "/:patientUid/appointments/:slotSeconds/procedure",
   requirePatientOrAdminToken,
-  getUserAppointmentProcedure
+  getProcedure
 )
 
 router.patch(
   "/:patientUid/appointments/:slotSeconds/procedure",
   requireAdminToken,
-  setUserAppointmentProcedure
+  setProcedure
 )
 
 router.delete(
   "/:patientUid/appointments/:slotSeconds/cancel",
   requirePatientToken,
-  cancelUserAppointment
+  cancel
 )
 
 module.exports = router

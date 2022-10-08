@@ -1,26 +1,26 @@
-const express = require("express");
-const router = express.Router();
-const cancelAppointment = require("../controllers/appointments/cancelAppointment");
-const newAppointment = require("../controllers/appointments/newAppointment");
-const addClosedSlot = require("../controllers/schedules/addClosedSlot");
-const deleteClosedSlot = require("../controllers/schedules/deleteClosedSlot");
-const getClosedSlots = require("../controllers/schedules/getClosedSlots");
-const getUnavailableSlots = require("../controllers/timeslots/getUnavailableSlots");
-const requirePatientToken = require("../middleware/requirePatientToken");
+const express = require("express")
+const router = express.Router()
+
+const { cancel, create } = require("../controllers/AppointmentsController")
+
+const {
+  addClosed,
+  deleteClosed,
+  getClosed,
+  getUnavailable,
+} = require("../controllers/TimeslotsController")
+
+const requirePatientToken = require("../middleware/requirePatientToken")
 
 /* Admin only */
-router.put("/closed", addClosedSlot);
-router.delete("/closed/:slotSeconds", deleteClosedSlot);
-router.get("/closed/:year/:month", getClosedSlots); // deprecated
+router.put("/closed", addClosed)
+router.delete("/closed/:slotSeconds", deleteClosed)
+router.get("/closed/:year/:month", getClosed) // deprecated
 
 /* Anyone */
-router.put("/appointments", requirePatientToken, newAppointment);
-router.delete(
-  "/appointments/:slotSeconds",
-  requirePatientToken,
-  cancelAppointment
-);
+router.put("/appointments", requirePatientToken, create)
+router.delete("/appointments/:slotSeconds", requirePatientToken, cancel)
 
-router.get("/unavailable/:year/:month", getUnavailableSlots);
+router.get("/unavailable/:year/:month", getUnavailable)
 
-module.exports = router;
+module.exports = router

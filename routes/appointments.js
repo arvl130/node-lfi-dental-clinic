@@ -1,7 +1,7 @@
-const express = require("express");
-const getAllAppointments = require("../controllers/appointments/getAllAppointments");
-const router = express.Router();
+const express = require("express")
+const router = express.Router()
+const { getAll } = require("../controllers/AppointmentsController")
 
-router.get("/:year/:month", getAllAppointments);
+router.get("/:year/:month", getAll)
 
-module.exports = router;
+module.exports = router
