@@ -1,6 +1,6 @@
 const { DateTime } = require("luxon")
 
-module.exports = (slotSeconds) => {
+function getDateTwoDaysBeforeTimeslot(slotSeconds) {
   const date = new Date(slotSeconds * 1000)
   const month = date.toLocaleString("en-us", {
     timeZone: "Asia/Manila",
@@ -25,3 +25,5 @@ module.exports = (slotSeconds) => {
 
   return new Date(isoDateStr)
 }
+
+module.exports = getDateTwoDaysBeforeTimeslot
