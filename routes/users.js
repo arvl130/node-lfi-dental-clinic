@@ -89,7 +89,7 @@ router.get("/:patientUid/forms/assessment", requireAdminToken, getAssessment)
 router.patch("/:patientUid/forms/assessment", requireAdminToken, setAssessment)
 
 /* User appointments */
-router.get("/:patientUid/appointments", requirePatientToken, getAll)
+router.get("/:patientUid/appointments", requirePatientOrAdminToken, getAll)
 router.put("/:patientUid/appointments", requirePatientToken, create)
 
 router.put(
