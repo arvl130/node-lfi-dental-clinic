@@ -58,8 +58,34 @@ async function create(partialMessage) {
   }
 }
 
+async function toggleArchiveStatus(uid) {
+  const docSnap = await db.collection("messages").doc(uid).get()
+
+  if (!docSnap.exists) {
+    const error = new Error("No such message")
+    error.httpErrorCode = 404
+    throw error
+  }
+
+  const { isArchived } = docSnap.data()
+
+  await db.collection("messages").doc(uid).set(
+    {
+      isArchived: !isArchived,
+    },
+    {
+      merge: true,
+    }
+  )
+
+  return {
+    newStatus: isArchived ? "archived" : "unarchived",
+  }
+}
+
 module.exports = {
   create,
   remove,
   getAll,
+  toggleArchiveStatus,
 }

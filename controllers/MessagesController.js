@@ -2,6 +2,7 @@ const {
   create: doCreate,
   remove: doRemove,
   getAll: doGetAll,
+  toggleArchiveStatus: doToggleArchiveStatus,
 } = require("../models/Messages")
 
 async function remove(req, res) {
@@ -77,8 +78,32 @@ async function create(req, res) {
   }
 }
 
+async function toggleArchiveStatus(req, res) {
+  try {
+    const uid = req.params.uid
+
+    if (!uid) {
+      const error = new Error("Missing or invalid UID")
+      error.httpErrorCode = 400
+      throw error
+    }
+
+    const { newStatus } = await doToggleArchiveStatus(uid)
+
+    res.status(200).json({
+      message: `Message is now ${newStatus}`,
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message:
+        e.message || "Error occured while changing message archive status",
+    })
+  }
+}
+
 module.exports = {
   create,
   remove,
   getAll,
+  toggleArchiveStatus,
 }
