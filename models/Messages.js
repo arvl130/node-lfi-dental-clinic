@@ -41,6 +41,7 @@ async function getAll() {
 async function create(partialMessage) {
   const doc = await db.collection("messages").add({
     ...partialMessage,
+    isArchived: false,
     createdAt: FieldValue.serverTimestamp(),
   })
 
