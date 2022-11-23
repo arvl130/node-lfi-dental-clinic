@@ -1,5 +1,10 @@
 const HttpError = require("../helpers/HttpError")
-const { getFirstN: doGetFirstN, get: doGet } = require("../models/Users")
+const {
+  getFirstN: doGetFirstN,
+  get: doGet,
+  getAnyN: doGetAnyN,
+  getByName: doGetByName,
+} = require("../models/Users")
 
 async function getFirstN(req, res) {
   try {
@@ -49,7 +54,49 @@ async function get(req, res) {
   }
 }
 
+async function getAnyN(req, res) {
+  try {
+    const upToNUsers = 8
+    const usersList = await doGetAnyN(upToNUsers)
+
+    res.status(200).json({
+      message: `List of users`,
+      payload: {
+        users: usersList,
+      },
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while getting list of users: ${e.message}`,
+    })
+  }
+}
+
+async function getByName(req, res) {
+  try {
+    const { nameFilter } = req.params
+
+    if (!nameFilter)
+      throw new HttpError("Missing or invalid name to search with", 400)
+
+    const usersList = await doGetByName(nameFilter)
+
+    res.status(200).json({
+      message: `List of matching users`,
+      payload: {
+        users: usersList,
+      },
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while getting list of users: ${e.message}`,
+    })
+  }
+}
+
 module.exports = {
   getFirstN,
+  getAnyN,
   get,
+  getByName,
 }

@@ -18,7 +18,8 @@ const { create } = require("../controllers/AppointmentsController")
 
 const {
   get: getUser,
-  getFirstN: getFirstNUsers,
+  getAnyN: getAnyNUsers,
+  getByName: getUsersByName,
 } = require("../controllers/UsersController")
 
 const {
@@ -45,7 +46,8 @@ const {
 } = require("../controllers/UserSignaturesController")
 
 /* User info */
-router.get("/", requireAdminToken, getFirstNUsers)
+router.get("/", requireAdminToken, getAnyNUsers)
+router.get("/search/by-name/:nameFilter", requireAdminToken, getUsersByName)
 router.get("/:patientUid", requirePatientOrAdminToken, getUser)
 
 /* User charts */

@@ -19,6 +19,8 @@ async function createAdmin(email, password) {
 
   await db.collection("users").doc(uid).set({
     accountType: "admin",
+    displayName: "Admin User",
+    email,
   })
 
   const docSnap = await db.collection("users").doc(uid).get()
@@ -48,8 +50,10 @@ async function createPatient(email, password, fullName) {
 
     await db.collection("users").doc(uid).set({
       accountType: "patient",
-      filledInMedicalChart: false,
       displayName: fullName,
+      email,
+      filledInMedicalChart: false,
+      isArchived: false,
     })
 
     const docSnap = await db.collection("users").doc(uid).get()
@@ -126,10 +130,55 @@ async function get(patientUid) {
   return await auth.getUser(patientUid)
 }
 
+async function getAnyN(numberOfUsers) {
+  const usersList = []
+  const usersRef = db
+    .collection("users")
+    .where("accountType", "==", "patient")
+    .where("isArchived", "==", false)
+    .limit(numberOfUsers)
+
+  const usersSnapshot = await usersRef.get()
+  if (!usersSnapshot.empty) {
+    usersSnapshot.forEach((doc) => {
+      usersList.push({
+        uid: doc.id,
+        ...doc.data(),
+      })
+    })
+  }
+
+  return usersList
+}
+
+async function getByName(nameFilter) {
+  const usersList = []
+  const usersRef = db
+    .collection("users")
+    .where("accountType", "==", "patient")
+    .where("isArchived", "==", false)
+
+  const usersSnapshot = await usersRef.get()
+  if (!usersSnapshot.empty) {
+    usersSnapshot.forEach((doc) => {
+      usersList.push({
+        uid: doc.id,
+        ...doc.data(),
+      })
+    })
+  }
+
+  return usersList.filter(({ displayName }) =>
+    displayName.toLowerCase().includes(nameFilter)
+  )
+}
+
 module.exports = {
   createAdmin,
   createPatient,
   getFirstN,
+  getAnyN,
   getAll,
   get,
+  getByName,
 }
