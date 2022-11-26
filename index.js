@@ -34,3 +34,6 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Listening on port ${port} ...`)
 })
+
+// Export Express app so that Vercel can host it.
+module.exports = app
