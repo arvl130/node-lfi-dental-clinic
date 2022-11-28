@@ -20,17 +20,19 @@ module.exports = async (req, res, next) => {
 
     if (!idToken) throw new HttpError("Missing or invalid ID token", 400)
 
-    const decodedToken = await auth.verifyIdToken(idToken)
+    const { accountType, uid } = await auth.verifyIdToken(idToken)
 
-    if (
-      decodedToken.accountType === "patient" ||
-      decodedToken.accountType === "admin"
-    ) {
-      req.patientUid = decodedToken.uid
-      next()
-    } else {
+    if (!accountType) {
       throw new HttpError("Unauthorized request", 401)
     }
+
+    if (accountType !== "patient" || accountType !== "admin")
+      throw new HttpError("Unauthorized request", 401)
+
+    req.patientUid = uid
+    req.accountType = accountType
+
+    next()
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
       message: `Error occured while getting verifying token: ${e.message}`,
