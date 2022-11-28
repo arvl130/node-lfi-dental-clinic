@@ -26,7 +26,7 @@ module.exports = async (req, res, next) => {
       throw new HttpError("Unauthorized request", 401)
     }
 
-    if (accountType !== "patient" || accountType !== "admin")
+    if (accountType !== "patient" && accountType !== "admin")
       throw new HttpError("Unauthorized request", 401)
 
     req.patientUid = uid
