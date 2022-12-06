@@ -151,6 +151,27 @@ async function getAnyN(numberOfUsers) {
   return usersList
 }
 
+async function getArchivedAnyN(numberOfUsers) {
+  const usersList = []
+  const usersRef = db
+    .collection("users")
+    .where("accountType", "==", "patient")
+    .where("isArchived", "==", true)
+    .limit(numberOfUsers)
+
+  const usersSnapshot = await usersRef.get()
+  if (!usersSnapshot.empty) {
+    usersSnapshot.forEach((doc) => {
+      usersList.push({
+        uid: doc.id,
+        ...doc.data(),
+      })
+    })
+  }
+
+  return usersList
+}
+
 async function getByName(nameFilter) {
   const usersList = []
   const usersRef = db
@@ -173,12 +194,60 @@ async function getByName(nameFilter) {
   )
 }
 
+async function getArchivedByName(nameFilter) {
+  const usersList = []
+  const usersRef = db
+    .collection("users")
+    .where("accountType", "==", "patient")
+    .where("isArchived", "==", true)
+
+  const usersSnapshot = await usersRef.get()
+  if (!usersSnapshot.empty) {
+    usersSnapshot.forEach((doc) => {
+      usersList.push({
+        uid: doc.id,
+        ...doc.data(),
+      })
+    })
+  }
+
+  return usersList.filter(({ displayName }) =>
+    displayName.toLowerCase().includes(nameFilter)
+  )
+}
+
+async function setArchived(patientUid) {
+  await db.collection("users").doc(`${patientUid}`).set(
+    {
+      isArchived: true,
+    },
+    {
+      merge: true,
+    }
+  )
+}
+
+async function setNotArchived(patientUid) {
+  await db.collection("users").doc(`${patientUid}`).set(
+    {
+      isArchived: false,
+    },
+    {
+      merge: true,
+    }
+  )
+}
+
 module.exports = {
   createAdmin,
   createPatient,
   getFirstN,
   getAnyN,
+  getArchivedAnyN,
   getAll,
   get,
   getByName,
+  getArchivedByName,
+  setArchived,
+  setNotArchived,
 }

@@ -3,7 +3,11 @@ const {
   getFirstN: doGetFirstN,
   get: doGet,
   getAnyN: doGetAnyN,
+  getArchivedAnyN: doGetArchivedAnyN,
   getByName: doGetByName,
+  getArchivedByName: doGetArchivedByName,
+  setArchived: doSetArchived,
+  setNotArchived: doSetNotArchived,
 } = require("../models/Users")
 
 async function getFirstN(req, res) {
@@ -72,6 +76,24 @@ async function getAnyN(req, res) {
   }
 }
 
+async function getArchivedAnyN(req, res) {
+  try {
+    const upToNUsers = 8
+    const usersList = await doGetArchivedAnyN(upToNUsers)
+
+    res.status(200).json({
+      message: `List of users`,
+      payload: {
+        users: usersList,
+      },
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while getting list of users: ${e.message}`,
+    })
+  }
+}
+
 async function getByName(req, res) {
   try {
     const { nameFilter } = req.params
@@ -94,9 +116,73 @@ async function getByName(req, res) {
   }
 }
 
+async function getArchivedByName(req, res) {
+  try {
+    const { nameFilter } = req.params
+
+    if (!nameFilter)
+      throw new HttpError("Missing or invalid name to search with", 400)
+
+    const usersList = await doGetArchivedByName(nameFilter)
+
+    res.status(200).json({
+      message: `List of matching archived users`,
+      payload: {
+        users: usersList,
+      },
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while getting list of users: ${e.message}`,
+    })
+  }
+}
+
+async function setArchived(req, res) {
+  try {
+    const { patientUid } = req.params
+
+    if (!patientUid)
+      throw new HttpError("Missing or invalid patient UID to search with", 400)
+
+    await doSetArchived(patientUid)
+
+    res.status(200).json({
+      message: `Patient is now archived`,
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while getting list of users: ${e.message}`,
+    })
+  }
+}
+
+async function setNotArchived(req, res) {
+  try {
+    const { patientUid } = req.params
+
+    if (!patientUid)
+      throw new HttpError("Missing or invalid patient UID to search with", 400)
+
+    await doSetNotArchived(patientUid)
+
+    res.status(200).json({
+      message: `Patient is now unarchived`,
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while getting list of users: ${e.message}`,
+    })
+  }
+}
+
 module.exports = {
   getFirstN,
   getAnyN,
+  getArchivedAnyN,
   get,
   getByName,
+  getArchivedByName,
+  setArchived,
+  setNotArchived,
 }

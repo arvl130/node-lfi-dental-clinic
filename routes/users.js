@@ -19,7 +19,11 @@ const { create } = require("../controllers/AppointmentsController")
 const {
   get: getUser,
   getAnyN: getAnyNUsers,
+  getArchivedAnyN: getAnyNArchivedUsers,
   getByName: getUsersByName,
+  getArchivedByName: getArchivedUsersByName,
+  setArchived,
+  setNotArchived,
 } = require("../controllers/UsersController")
 
 const {
@@ -46,9 +50,17 @@ const {
 } = require("../controllers/UserSignaturesController")
 
 /* User info */
-router.get("/", requireAdminToken, getAnyNUsers)
 router.get("/search/by-name/:nameFilter", requireAdminToken, getUsersByName)
+router.get(
+  "/archived/search/by-name/:nameFilter",
+  requireAdminToken,
+  getArchivedUsersByName
+)
+router.get("/archived", requirePatientOrAdminToken, getAnyNArchivedUsers)
+router.post("/:patientUid/archived", requireAdminToken, setArchived)
+router.delete("/:patientUid/archived", requireAdminToken, setNotArchived)
 router.get("/:patientUid", requirePatientOrAdminToken, getUser)
+router.get("/", requireAdminToken, getAnyNUsers)
 
 /* User charts */
 router.get(
