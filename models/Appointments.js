@@ -94,6 +94,7 @@ async function create(patientUid, slotSeconds, service) {
 
   batch.set(userAppointmentsRef, {
     createdAt: FieldValue.serverTimestamp(),
+    timeslot: slotSeconds.toString(),
     service,
     procedure: "",
     price: 0,
