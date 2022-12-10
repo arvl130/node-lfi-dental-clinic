@@ -6,6 +6,7 @@ const requirePatientOrAdminToken = require("../middleware/requirePatientOrAdminT
 const requireAdminToken = require("../middleware/requireAdminToken")
 
 const {
+  silentDelete,
   cancel,
   getAll,
   getProcedure,
@@ -140,6 +141,12 @@ router.delete(
   "/:patientUid/appointments/:slotSeconds/cancel",
   requirePatientToken,
   cancel
+)
+
+router.delete(
+  "/:patientUid/appointments/:slotSeconds/delete",
+  requireAdminToken,
+  silentDelete
 )
 
 module.exports = router

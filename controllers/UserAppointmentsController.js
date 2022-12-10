@@ -10,7 +10,37 @@ const {
   setNotAttended: doSetNotAttended,
   setPending: doSetPending,
 } = require("../models/UserAppointments")
-const { cancel: doCancel } = require("../models/Appointments")
+
+const {
+  cancel: doCancel,
+  silentDelete: doSilentDelete,
+} = require("../models/Appointments")
+
+async function silentDelete(req, res) {
+  try {
+    const { patientUid, slotSeconds } = req.params
+
+    if (!patientUid)
+      throw new HttpError(`Missing or invalid patient UID: ${patientUid}`, 400)
+
+    if (!slotSeconds)
+      throw new HttpError(
+        `Missing or invalid slot seconds: ${slotSeconds}`,
+        400
+      )
+
+    await doSilentDelete(patientUid, slotSeconds)
+
+    res.status(200).json({
+      message: "Appointment deleted",
+      payload: slotSeconds,
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while cancelling appointment: ${e.message}`,
+    })
+  }
+}
 
 async function cancel(req, res) {
   try {
@@ -191,6 +221,7 @@ async function setProcedure(req, res) {
 
 module.exports = {
   cancel,
+  silentDelete,
   getAll,
   getProcedure,
   setProcedure,
