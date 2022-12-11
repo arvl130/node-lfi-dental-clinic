@@ -39,12 +39,10 @@ async function getAll(req, res) {
 
 async function create(req, res) {
   try {
-    const subject = req.body.subject
-    const body = req.body.body
-    const senderName = req.body.senderName
+    const { body, email, senderName } = req.body
 
-    if (!subject) {
-      const error = new Error("Missing or invalid message subject")
+    if (!email) {
+      const error = new Error("Missing or invalid message email")
       error.httpErrorCode = 400
       throw error
     }
@@ -62,7 +60,7 @@ async function create(req, res) {
     }
 
     const message = await doCreate({
-      subject,
+      email,
       body,
       senderName,
     })
