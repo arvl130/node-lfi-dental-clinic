@@ -101,7 +101,7 @@ async function create(patientUid, slotSeconds, service) {
     service,
     procedure: "",
     price: 0,
-    balance: 0,
+    amountPaid: 0,
     status: null,
     month: monthSeconds,
     patientUid,
