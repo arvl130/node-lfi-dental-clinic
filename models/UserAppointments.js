@@ -83,7 +83,7 @@ async function setPending(patientUid, slotSeconds) {
       {
         attended: "pending",
         price: 0,
-        balance: 0,
+        amountPaid: 0,
         status: null,
         procedure: "",
         procedureVisible: false,
