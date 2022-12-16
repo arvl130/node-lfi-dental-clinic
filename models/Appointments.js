@@ -71,10 +71,13 @@ async function cancel(patientUid, slotSeconds) {
     email,
     "LFI Dental Clinic - Your appointment has been cancelled",
     `
-The following appointment has been cancelled:
+Dear ${patientName},
+
+The following appointment you have set has been cancelled:
 Date and time: ${formattedDate} ${hours}:${minutes} ${ampm}
-Patient name: ${patientName}
 Service: ${userAppointmentSnapshot.data().service ?? "N/A"}
+
+This is a system-generated email notification. Replies to this message are not monitored or answered.
   `
   )
 }
@@ -150,10 +153,13 @@ async function create(patientUid, slotSeconds, service) {
     email,
     "LFI Dental Clinic - You have been reserved an appointment",
     `
-The following appointment has been reserved:
+Dear ${patientName},
+
+The following appointment has been reserved for you:
 Date and time: ${formattedDate} ${hours}:${minutes} ${ampm}
-Patient name: ${patientName}
 Service: ${service}
+
+This is a system-generated email notification. Replies to this message are not monitored or answered.
   `
   )
 }
