@@ -6,6 +6,8 @@ const {
   setDeciduous: doSetDeciduous,
   setDental: doSetDental,
   setMedical: doSetMedical,
+  isFilledInMedicalChart: doIsFilledInMedicalChart,
+  setFilledInMedicalChart: doSetFilledInMedicalChart,
 } = require("../models/UserCharts")
 const { getAuth } = require("firebase-admin/auth")
 const auth = getAuth()
@@ -173,6 +175,43 @@ async function setMedical(req, res) {
   }
 }
 
+async function isFilledInMedicalChart(req, res) {
+  try {
+    const { patientUid } = req.params
+
+    if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
+
+    const filledIn = await doIsFilledInMedicalChart(patientUid)
+
+    res.status(200).json({
+      message: "Retrieved filled in status of medical chart",
+      payload: filledIn,
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while retrieving filled in status of medical chart: ${e.message}`,
+    })
+  }
+}
+
+async function setFilledInMedicalChart(req, res) {
+  try {
+    const { patientUid } = req.params
+
+    if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
+
+    await doSetFilledInMedicalChart(patientUid)
+
+    res.status(200).json({
+      message: "Medical chart filled in set",
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while setting medical chart as filled in: ${e.message}`,
+    })
+  }
+}
+
 module.exports = {
   getDeciduous,
   setDeciduous,
@@ -180,4 +219,6 @@ module.exports = {
   setDental,
   getMedical,
   setMedical,
+  isFilledInMedicalChart,
+  setFilledInMedicalChart,
 }

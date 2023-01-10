@@ -9,6 +9,8 @@ const {
   setAttended: doSetAttended,
   setNotAttended: doSetNotAttended,
   setPending: doSetPending,
+  cancelRequestProcedureAccess: doCancelProcedureAccess,
+  requestProcedureAccess: doRequestProcedureAccess,
 } = require("../models/UserAppointments")
 
 const {
@@ -111,8 +113,7 @@ async function getAll(req, res) {
   try {
     const patientUid = req.params.patientUid
 
-    if (!patientUid)
-      throw new HttpError("Missing or invalid dental history", 400)
+    if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
 
     const userAppointments = await doGetAll(patientUid)
 
@@ -219,6 +220,48 @@ async function setProcedure(req, res) {
   }
 }
 
+async function requestProcedureAccess(req, res) {
+  try {
+    const { patientUid, slotSeconds } = req.params
+
+    if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
+
+    if (!slotSeconds)
+      throw new HttpError("Missing or invalid slot seconds", 400)
+
+    await doRequestProcedureAccess(patientUid, slotSeconds)
+
+    res.status(200).json({
+      message: "Requested access to procedure",
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while requesting access to procedure: ${e.message}`,
+    })
+  }
+}
+
+async function cancelProcedureAccess(req, res) {
+  try {
+    const { patientUid, slotSeconds } = req.params
+
+    if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
+
+    if (!slotSeconds)
+      throw new HttpError("Missing or invalid slot seconds", 400)
+
+    await doCancelProcedureAccess(patientUid, slotSeconds)
+
+    res.status(200).json({
+      message: "Cancelled request to access procedure",
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while cancelling request to access procedure: ${e.message}`,
+    })
+  }
+}
+
 module.exports = {
   cancel,
   silentDelete,
@@ -228,4 +271,6 @@ module.exports = {
   setAttended,
   setNotAttended,
   setPending,
+  requestProcedureAccess,
+  cancelProcedureAccess,
 }

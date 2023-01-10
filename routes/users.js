@@ -14,6 +14,8 @@ const {
   setAttended,
   setNotAttended,
   setPending,
+  cancelProcedureAccess,
+  requestProcedureAccess,
 } = require("../controllers/UserAppointmentsController")
 const { create } = require("../controllers/AppointmentsController")
 
@@ -34,6 +36,8 @@ const {
   setDental,
   getMedical,
   setMedical,
+  isFilledInMedicalChart,
+  setFilledInMedicalChart,
 } = require("../controllers/UserChartsController")
 
 const {
@@ -74,6 +78,18 @@ router.patch(
   "/:patientUid/charts/medical-chart",
   requirePatientOrAdminToken,
   setMedical
+)
+
+router.get(
+  "/:patientUid/charts/medical-chart/filled-in",
+  requirePatientOrAdminToken,
+  isFilledInMedicalChart
+)
+
+router.post(
+  "/:patientUid/charts/medical-chart/filled-in",
+  requirePatientOrAdminToken,
+  setFilledInMedicalChart
 )
 
 router.get("/:patientUid/charts/dental-chart", requireAdminToken, getDental)
@@ -135,6 +151,18 @@ router.patch(
   "/:patientUid/appointments/:slotSeconds/procedure",
   requireAdminToken,
   setProcedure
+)
+
+router.put(
+  "/:patientUid/appointments/:slotSeconds/procedure/request-access",
+  requirePatientToken,
+  requestProcedureAccess
+)
+
+router.delete(
+  "/:patientUid/appointments/:slotSeconds/procedure/request-access",
+  requirePatientToken,
+  cancelProcedureAccess
 )
 
 router.delete(

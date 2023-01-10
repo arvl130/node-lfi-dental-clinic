@@ -124,6 +124,27 @@ async function setMedical(
     })
 }
 
+async function isFilledInMedicalChart(patientUid) {
+  const docSnap = await db.collection("users").doc(patientUid)
+
+  if (docSnap.exists) {
+    const data = docSnap.data()
+    if (data.filledInMedicalChart) return true
+    else return false
+  } else return false
+}
+
+async function setFilledInMedicalChart(patientUid) {
+  await db.collection("users").doc(patientUid).set(
+    {
+      filledInMedicalChart: true,
+    },
+    {
+      merge: true,
+    }
+  )
+}
+
 module.exports = {
   getDeciduous,
   setDeciduous,
@@ -131,4 +152,6 @@ module.exports = {
   setDental,
   getMedical,
   setMedical,
+  isFilledInMedicalChart,
+  setFilledInMedicalChart,
 }

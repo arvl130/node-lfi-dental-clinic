@@ -110,6 +110,38 @@ async function setProcedure(patientUid, slotSeconds, procedureBody) {
     )
 }
 
+async function requestProcedureAccess(patientUid, slotSeconds) {
+  await db
+    .collection("users")
+    .doc(patientUid)
+    .collection("appointments")
+    .doc(slotSeconds)
+    .set(
+      {
+        procedureVisible: "requesting",
+      },
+      {
+        merge: true,
+      }
+    )
+}
+
+async function cancelRequestProcedureAccess(patientUid, slotSeconds) {
+  await db
+    .collection("users")
+    .doc(patientUid)
+    .collection("appointments")
+    .doc(slotSeconds)
+    .set(
+      {
+        procedureVisible: false,
+      },
+      {
+        merge: true,
+      }
+    )
+}
+
 module.exports = {
   getAll,
   getProcedure,
@@ -117,4 +149,6 @@ module.exports = {
   setAttended,
   setNotAttended,
   setPending,
+  requestProcedureAccess,
+  cancelRequestProcedureAccess,
 }
