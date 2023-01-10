@@ -2,3 +2,4 @@
 .vscode/*
 garbagebin/*
 node_modules/*
+scripts
