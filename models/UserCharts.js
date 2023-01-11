@@ -9,11 +9,11 @@ async function getDeciduous(patientUid) {
     .doc("deciduousChart")
     .get()
 
-  if (docSnap.exists) return docSnap.data()
-  else
-    return {
-      dataUrl: "",
-    }
+  if (docSnap.exists) {
+    const data = docSnap.data()
+    if (data) return data.dataUrl
+    else return ""
+  } else return ""
 }
 
 async function setDeciduous(patientUid, dataUrl) {

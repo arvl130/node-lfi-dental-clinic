@@ -22,10 +22,7 @@ async function getDeciduous(req, res) {
 
     res.status(200).json({
       message: "Retrieved deciduous chart",
-      payload: {
-        uid: patientUid,
-        ...deciduousChart,
-      },
+      payload: deciduousChart,
     })
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
