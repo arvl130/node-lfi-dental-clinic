@@ -8,9 +8,11 @@ const {
   toggleArchiveStatus,
 } = require("../controllers/MessagesController")
 
-router.get("/", getAll)
+const requireAdminToken = require("../middleware/requireAdminToken")
+
+router.get("/", requireAdminToken, getAll)
 router.put("/", create)
-router.delete("/:uid/delete", remove)
-router.patch("/:uid", toggleArchiveStatus)
+router.delete("/:uid/delete", requireAdminToken, remove)
+router.patch("/:uid", requireAdminToken, toggleArchiveStatus)
 
 module.exports = router
