@@ -6,11 +6,6 @@ const auth = getAuth()
 
 module.exports = async (req, res, next) => {
   try {
-    if (isDevelopmentEnvironment()) {
-      next()
-      return
-    }
-
     const authorizationHeader = req.headers.authorization
 
     if (!authorizationHeader)
