@@ -18,6 +18,7 @@ const {
   requestProcedureAccess,
   setProcedureAccessAllowed,
   setProcedureAccessDisallowed,
+  setAppointmentPayment,
 } = require("../controllers/UserAppointmentsController")
 const { create } = require("../controllers/AppointmentsController")
 
@@ -189,6 +190,12 @@ router.delete(
   "/:patientUid/appointments/:slotSeconds/delete",
   requireAdminToken,
   silentDelete
+)
+
+router.post(
+  "/:patientUid/appointments/:slotSeconds/payment",
+  requireAdminToken,
+  setAppointmentPayment
 )
 
 module.exports = router

@@ -13,6 +13,7 @@ const {
   requestProcedureAccess: doRequestProcedureAccess,
   setProcedureAccessAllowed: doSetProcedureAccessAllowed,
   setProcedureAccessDisallowed: doSetProcedureAccessDisallowed,
+  setAppointmentPayment: doSetAppointmentPayment,
 } = require("../models/UserAppointments")
 
 const {
@@ -306,6 +307,43 @@ async function setProcedureAccessDisallowed(req, res) {
   }
 }
 
+async function setAppointmentPayment(req, res) {
+  try {
+    const { patientUid, slotSeconds } = req.params
+    const { price, amountPaid, status } = req.body
+
+    if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
+
+    if (!slotSeconds)
+      throw new HttpError("Missing or invalid slot seconds", 400)
+
+    if (!isFinite(price) || isNaN(price))
+      throw new HttpError("Missing or invalid price", 400)
+
+    if (!isFinite(amountPaid) || isNaN(amountPaid))
+      throw new HttpError("Missing or invalid amount paid", 400)
+
+    if (!status === undefined)
+      throw new HttpError("Missing or invalid status", 400)
+
+    await doSetAppointmentPayment(
+      patientUid,
+      slotSeconds,
+      price,
+      amountPaid,
+      status
+    )
+
+    res.status(200).json({
+      message: "Appointment payment set",
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while setting appointment payment: ${e.message}`,
+    })
+  }
+}
+
 module.exports = {
   cancel,
   silentDelete,
@@ -319,4 +357,5 @@ module.exports = {
   cancelProcedureAccess,
   setProcedureAccessAllowed,
   setProcedureAccessDisallowed,
+  setAppointmentPayment,
 }

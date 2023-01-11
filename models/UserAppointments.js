@@ -174,6 +174,30 @@ async function setProcedureAccessDisallowed(patientUid, slotSeconds) {
     )
 }
 
+async function setAppointmentPayment(
+  patientUid,
+  slotSeconds,
+  price,
+  amountPaid,
+  status
+) {
+  await db
+    .collection("users")
+    .doc(patientUid)
+    .collection("appointments")
+    .doc(slotSeconds)
+    .set(
+      {
+        price,
+        amountPaid,
+        status,
+      },
+      {
+        merge: true,
+      }
+    )
+}
+
 module.exports = {
   getAll,
   getProcedure,
@@ -185,4 +209,5 @@ module.exports = {
   cancelRequestProcedureAccess,
   setProcedureAccessAllowed,
   setProcedureAccessDisallowed,
+  setAppointmentPayment,
 }
