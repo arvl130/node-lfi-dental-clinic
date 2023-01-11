@@ -11,6 +11,8 @@ const {
   setPending: doSetPending,
   cancelRequestProcedureAccess: doCancelProcedureAccess,
   requestProcedureAccess: doRequestProcedureAccess,
+  setProcedureAccessAllowed: doSetProcedureAccessAllowed,
+  setProcedureAccessDisallowed: doSetProcedureAccessDisallowed,
 } = require("../models/UserAppointments")
 
 const {
@@ -262,6 +264,48 @@ async function cancelProcedureAccess(req, res) {
   }
 }
 
+async function setProcedureAccessAllowed(req, res) {
+  try {
+    const { patientUid, slotSeconds } = req.params
+
+    if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
+
+    if (!slotSeconds)
+      throw new HttpError("Missing or invalid slot seconds", 400)
+
+    await doSetProcedureAccessAllowed(patientUid, slotSeconds)
+
+    res.status(200).json({
+      message: "Procedure access allowed",
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while allowing procedure access: ${e.message}`,
+    })
+  }
+}
+
+async function setProcedureAccessDisallowed(req, res) {
+  try {
+    const { patientUid, slotSeconds } = req.params
+
+    if (!patientUid) throw new HttpError("Missing or invalid patient UID", 400)
+
+    if (!slotSeconds)
+      throw new HttpError("Missing or invalid slot seconds", 400)
+
+    await doSetProcedureAccessDisallowed(patientUid, slotSeconds)
+
+    res.status(200).json({
+      message: "Procedure access disallowed",
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while disallowing procedure access: ${e.message}`,
+    })
+  }
+}
+
 module.exports = {
   cancel,
   silentDelete,
@@ -273,4 +317,6 @@ module.exports = {
   setPending,
   requestProcedureAccess,
   cancelProcedureAccess,
+  setProcedureAccessAllowed,
+  setProcedureAccessDisallowed,
 }

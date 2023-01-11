@@ -142,6 +142,38 @@ async function cancelRequestProcedureAccess(patientUid, slotSeconds) {
     )
 }
 
+async function setProcedureAccessAllowed(patientUid, slotSeconds) {
+  await db
+    .collection("users")
+    .doc(patientUid)
+    .collection("appointments")
+    .doc(slotSeconds)
+    .set(
+      {
+        procedureVisible: true,
+      },
+      {
+        merge: true,
+      }
+    )
+}
+
+async function setProcedureAccessDisallowed(patientUid, slotSeconds) {
+  await db
+    .collection("users")
+    .doc(patientUid)
+    .collection("appointments")
+    .doc(slotSeconds)
+    .set(
+      {
+        procedureVisible: false,
+      },
+      {
+        merge: true,
+      }
+    )
+}
+
 module.exports = {
   getAll,
   getProcedure,
@@ -151,4 +183,6 @@ module.exports = {
   setPending,
   requestProcedureAccess,
   cancelRequestProcedureAccess,
+  setProcedureAccessAllowed,
+  setProcedureAccessDisallowed,
 }

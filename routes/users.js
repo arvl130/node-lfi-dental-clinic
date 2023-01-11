@@ -16,6 +16,8 @@ const {
   setPending,
   cancelProcedureAccess,
   requestProcedureAccess,
+  setProcedureAccessAllowed,
+  setProcedureAccessDisallowed,
 } = require("../controllers/UserAppointmentsController")
 const { create } = require("../controllers/AppointmentsController")
 
@@ -163,6 +165,18 @@ router.delete(
   "/:patientUid/appointments/:slotSeconds/procedure/request-access",
   requirePatientToken,
   cancelProcedureAccess
+)
+
+router.put(
+  "/:patientUid/appointments/:slotSeconds/procedure/access",
+  requireAdminToken,
+  setProcedureAccessAllowed
+)
+
+router.delete(
+  "/:patientUid/appointments/:slotSeconds/procedure/access",
+  requireAdminToken,
+  setProcedureAccessDisallowed
 )
 
 router.delete(
