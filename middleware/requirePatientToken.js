@@ -28,6 +28,7 @@ module.exports = async (req, res, next) => {
       throw new HttpError("Unauthorized request", 401)
 
     req.patientUid = uid
+    req.userId = uid
     req.accountType = accountType
 
     next()

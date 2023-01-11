@@ -20,13 +20,14 @@ module.exports = async (req, res, next) => {
 
     if (!idToken) throw new HttpError("Missing or invalid ID token", 400)
 
-    const { accountType } = await auth.verifyIdToken(idToken)
+    const { accountType, uid } = await auth.verifyIdToken(idToken)
 
     if (!accountType) throw new HttpError("Unauthorized request", 401)
 
     if (accountType !== "admin")
       throw new HttpError("Unauthorized request", 401)
 
+    req.userId = uid
     req.accountType = accountType
 
     next()
