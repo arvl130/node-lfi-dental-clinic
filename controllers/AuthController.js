@@ -78,7 +78,6 @@ async function updateFullName(req, res) {
       throw new HttpError("Missing or invalid email", 400)
     }
 
-    console.log(req.userId)
     await doUpdateFullName(req.userId, fullName)
 
     res.status(200).json({
