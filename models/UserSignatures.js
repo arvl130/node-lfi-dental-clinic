@@ -9,11 +9,12 @@ async function getPatient(patientUid) {
     .doc("patientSignature")
     .get()
 
-  if (docSnap.exists) return docSnap.data()
-  else
-    return {
-      dataUrl: "",
-    }
+  if (docSnap.exists) {
+    const data = docSnap.data()
+    if (data && data.dataUrl) return data.dataUrl
+    else return ""
+  }
+  return ""
 }
 
 async function setPatient(patientUid, dataUrl) {
@@ -35,11 +36,12 @@ async function getGuardian(patientUid) {
     .doc("guardianSignature")
     .get()
 
-  if (docSnap.exists) return docSnap.data()
-  else
-    return {
-      dataUrl: "",
-    }
+  if (docSnap.exists) {
+    const data = docSnap.data()
+    if (data && data.dataUrl) return data.dataUrl
+    else return ""
+  }
+  return ""
 }
 
 async function setGuardian(patientUid, dataUrl) {

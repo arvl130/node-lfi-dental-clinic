@@ -16,10 +16,7 @@ async function getGuardian(req, res) {
 
     res.status(200).json({
       message: "Retrieved guardian signature",
-      payload: {
-        uid: patientUid,
-        ...guardianSignature,
-      },
+      payload: guardianSignature,
     })
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
@@ -38,10 +35,7 @@ async function getPatient(req, res) {
 
     res.status(200).json({
       message: "Retrieved patient signature",
-      payload: {
-        uid: patientUid,
-        ...patientSignature,
-      },
+      payload: patientSignature,
     })
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
