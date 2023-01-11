@@ -2,7 +2,7 @@ const { getFirestore } = require("firebase-admin/firestore")
 const db = getFirestore()
 
 async function getConsent(patientUid) {
-  const docSnap = db
+  const docSnap = await db
     .collection("users")
     .doc(`${patientUid}/patientRecords/consentForm`)
     .get()
@@ -15,7 +15,7 @@ async function setConsent(patientUid, consentForm) {
   await db
     .collection("users")
     .doc(`${patientUid}/patientRecords/consentForm`)
-    .set(docRef, consentForm, {
+    .set(consentForm, {
       merge: true,
     })
 }
@@ -34,7 +34,7 @@ async function setAssessment(patientUid, assessmentForm) {
   await db
     .collection("users")
     .doc(`${patientUid}/patientRecords/assessmentForm`)
-    .set(docRef, assessmentForm, {
+    .set(assessmentForm, {
       merge: true,
     })
 }

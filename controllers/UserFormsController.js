@@ -16,10 +16,7 @@ async function getAssessment(req, res) {
 
     res.status(200).json({
       message: "Retrieved assessment form",
-      payload: {
-        uid: patientUid,
-        ...assessmentForm,
-      },
+      payload: assessmentForm,
     })
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
@@ -38,10 +35,7 @@ async function getConsent(req, res) {
 
     res.status(200).json({
       message: "Retrieved consent form",
-      payload: {
-        uid: patientUid,
-        ...consentForm,
-      },
+      payload: consentForm,
     })
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
