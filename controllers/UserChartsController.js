@@ -44,10 +44,7 @@ async function getDental(req, res) {
 
     res.status(200).json({
       message: "Retrieved dental chart",
-      payload: {
-        uid: patientUid,
-        ...dentalChart,
-      },
+      payload: dentalChart,
     })
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({

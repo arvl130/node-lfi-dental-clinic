@@ -35,11 +35,11 @@ async function getDental(patientUid) {
     .doc("dentalChart")
     .get()
 
-  if (docSnap.exists) return docSnap.data()
-  else
-    return {
-      dataUrl: "",
-    }
+  if (docSnap.exists) {
+    const data = docSnap.data()
+    if (data) return data.dataUrl
+    else return ""
+  } else return ""
 }
 
 async function setDental(patientUid, dataUrl) {
