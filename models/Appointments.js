@@ -220,9 +220,30 @@ async function silentDelete(patientUid, slotSeconds) {
   await batch.commit()
 }
 
+async function getRequestingProcedureAccess() {
+  const colSnap = await db
+    .collectionGroup("appointments")
+    .where("procedureVisible", "==", "requesting")
+    .get()
+
+  const appointments = []
+
+  if (!colSnap.empty) {
+    colSnap.forEach((doc) => {
+      appointments.push({
+        uid: doc.id,
+        ...doc.data(),
+      })
+    })
+  }
+
+  return appointments
+}
+
 module.exports = {
   getAll,
   create,
   cancel,
   silentDelete,
+  getRequestingProcedureAccess,
 }

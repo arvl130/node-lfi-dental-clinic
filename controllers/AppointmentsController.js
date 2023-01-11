@@ -3,6 +3,7 @@ const {
   cancel: doCancel,
   create: doCreate,
   getAll: doGetAll,
+  getRequestingProcedureAccess: doGetRequestingProcedureAccess,
 } = require("../models/Appointments")
 const getDateTwoDaysBeforeTimeslot = require("../helpers/conversions/getDateTwoDaysBeforeTimeslot")
 
@@ -90,8 +91,24 @@ async function create(req, res) {
   }
 }
 
+async function getRequestingProcedureAccess(req, res) {
+  try {
+    const appointments = await doGetRequestingProcedureAccess()
+
+    res.status(200).json({
+      message: "List of appointments requesting procedure access",
+      payload: appointments,
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while getting appointments requesting procedure access: ${e.message}`,
+    })
+  }
+}
+
 module.exports = {
   getAll,
   create,
   cancel,
+  getRequestingProcedureAccess,
 }
