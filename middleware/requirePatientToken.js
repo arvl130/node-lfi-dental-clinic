@@ -29,7 +29,7 @@ module.exports = async (req, res, next) => {
     next()
   } catch (e) {
     res.status(e.httpErrorCode || 500).json({
-      message: `Error occured while getting verifying token: ${e.message}`,
+      message: `Error occured while verifying token: ${e.message}`,
     })
   }
 }
