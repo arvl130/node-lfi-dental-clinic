@@ -1,5 +1,9 @@
 const HttpError = require("../helpers/HttpError")
-const { createAdmin, createPatient } = require("../models/Users")
+const {
+  createAdmin,
+  createPatient,
+  updateFullName: doUpdateFullName,
+} = require("../models/Users")
 
 async function registerAdmin(req, res) {
   try {
@@ -66,7 +70,29 @@ async function registerPatient(req, res) {
   }
 }
 
+async function updateFullName(req, res) {
+  try {
+    const { fullName } = req.body
+
+    if (!fullName) {
+      throw new HttpError("Missing or invalid email", 400)
+    }
+
+    console.log(req.userId)
+    await doUpdateFullName(req.userId, fullName)
+
+    res.status(200).json({
+      message: "User full name updated",
+    })
+  } catch (e) {
+    res.status(e.httpErrorCode || 500).json({
+      message: `Error occured while creating user: ${e.message}`,
+    })
+  }
+}
+
 module.exports = {
   registerAdmin,
   registerPatient,
+  updateFullName,
 }

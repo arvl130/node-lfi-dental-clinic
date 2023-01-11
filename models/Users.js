@@ -238,6 +238,39 @@ async function setNotArchived(patientUid) {
   )
 }
 
+async function updateFullName(uid, fullName, accountType) {
+  await auth.updateUser(uid, {
+    displayName: fullName,
+  })
+
+  db.collection("users").doc(uid).set(
+    {
+      displayName: fullName,
+    },
+    {
+      merge: true,
+    }
+  )
+
+  if (accountType === "patient") {
+    await db
+      .collection("users")
+      .doc(uid)
+      .collection("patientRecords")
+      .doc("medicalChart")
+      .set(
+        {
+          personalInformation: {
+            fullName,
+          },
+        },
+        {
+          merge: true,
+        }
+      )
+  }
+}
+
 module.exports = {
   createAdmin,
   createPatient,
@@ -250,4 +283,5 @@ module.exports = {
   getArchivedByName,
   setArchived,
   setNotArchived,
+  updateFullName,
 }
