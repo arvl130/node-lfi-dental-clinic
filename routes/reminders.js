@@ -16,7 +16,9 @@ router.get("/", requireAdminToken, async (req, res) => {
       const { message } = docSnap.data()
       res.status(200).json({
         message: `Reminders retrieved`,
-        payload: message,
+        payload: {
+          message,
+        },
       })
     } else {
       res.status(200).json({
