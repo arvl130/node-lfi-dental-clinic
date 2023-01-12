@@ -10,7 +10,9 @@ const {
   setFilledInMedicalChart: doSetFilledInMedicalChart,
 } = require("../models/UserCharts")
 const { getAuth } = require("firebase-admin/auth")
+const { getFirestore } = require("firebase-admin/firestore")
 const auth = getAuth()
+const db = getFirestore()
 
 async function getDeciduous(req, res) {
   try {
@@ -142,10 +144,22 @@ async function setMedical(req, res) {
     if (!dentalHistory)
       throw new HttpError("Missing or invalid dental history", 400)
 
+    // Update name in Firebase Auth.
     await auth.updateUser(patientUid, {
       displayName: personalInformation.fullName,
     })
 
+    // Update name in root user collection.
+    db.collection("users").doc(uid).set(
+      {
+        displayName: personalInformation.fullName,
+      },
+      {
+        merge: true,
+      }
+    )
+
+    // Update medical chart itself.
     await doSetMedical(
       patientUid,
       personalInformation,
