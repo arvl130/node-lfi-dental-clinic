@@ -125,7 +125,7 @@ async function setMedical(
 }
 
 async function isFilledInMedicalChart(patientUid) {
-  const docSnap = await db.collection("users").doc(patientUid)
+  const docSnap = await db.collection("users").doc(patientUid).get()
 
   if (docSnap.exists) {
     const data = docSnap.data()
